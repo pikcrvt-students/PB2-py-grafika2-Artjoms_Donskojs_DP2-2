@@ -12,7 +12,7 @@ a = Canvas(logs, width=platums, height=garums, bg='darkblue')
 a.pack()
 
 kuga_id = a.create_polygon(5, 5, 5, 25, 30, 15, fill="red")
-kuga_id2 = a.create_polygon(0, 0, 30, 30, outline="red")
+kuga_id2 = a.create_oval(0, 0, 30, 30, outline="red")
 
 kuga_r = 15
 vid_x = platums / 2
