@@ -61,7 +61,7 @@ def izveidot_burbuli():
 
 def parvietot_burbulus():
     for i in range(len(burb_id)):
-        a.move(burb_id[i], 0)
+        a.move(burb_id[i], -burb_atrums[i], 0)
 
 def iegut_koord(id_skaitlis):
     poz = a.coords(id_skaitlis)
