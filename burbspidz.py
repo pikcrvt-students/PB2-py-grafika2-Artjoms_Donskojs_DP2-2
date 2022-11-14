@@ -9,10 +9,10 @@ logs=Tk()
 logs.title("Burbuļu spridzinātājs")
 
 a = Canvas(logs, width=platums, height=garums, bg='darkblue')
-a.pack
+a.pack()
 
 kuga_id = a.create_polygon(5, 5, 5, 25, 30, 15, fill="red")
-kuga_id2 = a.create_polygon(0, 0, 30, outline="red")
+kuga_id2 = a.create_polygon(0, 0, 30, 30, outline="red")
 
 kuga_r = 15
 vid_x = platums / 2
@@ -66,15 +66,37 @@ def parvietot_burbulus():
 def iegut_koord(id_skaitlis):
     poz = a.coords(id_skaitlis)
     x = (poz[0] + poz[2]) / 2
-    y = (poz[1] + poz[2]) / 2
+    y = (poz[1] + poz[3]) / 2
     return x,y
+
 
 def dzest_burbuli(i):
     del burb_r[i]
     del burb_atrums[i]
     a.delete(burb_id[i])
     del burb_id[i]
-    
+
+def notirit_burbulus():
+    for i in range(len(burb_id)-1, -1, -1):
+        x,y = iegut_koord(burb_id[i])
+        if x < -atstarpe:
+            dzest_burbuli(i)
+
+from math import sqrt
+
+def attalums(id1, id2):
+    x1, y1 = iegut_koord(id1)
+    x2, y2 = iegut_koord(id2)
+    return sqrt((x2-x1)**2 + (y2-y1)**2)
+
+def sadursme():
+    punkti=0
+    for burb in range(len(burb_id)-1, -1, -1):
+        if attalums(kuga_id2, burb_id[burb]) < (kuga_r + burb_r[burb]):
+            punkti += (burb_r[burb] + burb_atrums[burb])
+            dzest_burbuli(burb)
+    return punkti
+
 burb_nejausi = 10
 
 #Speles galvenais cikls
@@ -83,7 +105,6 @@ while True:
     if randint(1, burb_nejausi) == 1:
         izveidot_burbuli()
         parvietot_burbulus()
+        notirit_burbulus()
         logs.update()
         sleep(0.01)
-
-
