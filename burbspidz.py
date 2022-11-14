@@ -97,14 +97,47 @@ def sadursme():
             dzest_burbuli(burb)
     return punkti
 
+a.create_text(50, 30, text='LAIKS', fill='white')
+a.create_text(150, 30, text='REZULTĀTS', fill='white')
+laiks_teksts = a.create_text(50, 50, fill='white')
+rezultats_teksts = a.create_text(150, 50, fill='white')
+def paradit_rezultatu(rezultats):
+    a.itemconfig(rezultats_teksts, text=str(rezultats))
+def paradit_laiku(laiks_palicis):
+    a.itemconfig(laiks_teksts, text=str(laiks_palicis))
+
+
+
 burb_nejausi = 10
+laika_ierobezojums = 30
+papildlaika_rez = 1000
+rezultats = 0
+papildu = 0
+beigas = time() + laika_ierobezojums
+
+
 
 #Speles galvenais cikls
 
-while True:
+while time() < beigas:
     if randint(1, burb_nejausi) == 1:
         izveidot_burbuli()
         parvietot_burbulus()
         notirit_burbulus()
+        rezultats += sadursme()
+        if (int(rezultats / papildlaika_rez)) > papildu:
+            papildu += 1
+            beigas += laika_ierobezojums
+        paradit_rezultatu(rezultats)
+        paradit_laiku(int(beigas - time()))
         logs.update()
         sleep(0.01)
+
+#SPĒLES BEIGAS
+
+a.create_text(vid_x, vid_y, \
+    text = 'SPĒLES BEIGAS', fill='white', font=('Helvetica',30))
+a.create_text(vid_x, vid_y + 30, \
+    text = 'Rezultāts: '+ str(rezultats), fill='white')
+a.create_text(vid_x, vid_y + 45, \
+    text = 'Papildu laiks: '+ str(papildu*laika_ierobezojums), fill='white')
