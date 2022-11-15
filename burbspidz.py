@@ -13,8 +13,8 @@ a.pack()
 
 kuga_id = a.create_polygon(5, 5, 5, 25, 30, 15, fill="red")
 kuga_id2 = a.create_oval(0, 0, 30, 30, outline="red")
-
 kuga_r = 15
+
 vid_x = platums / 2
 vid_y = garums / 2
 
@@ -53,7 +53,7 @@ def izveidot_burbuli():
     y = randint(0, garums)
     r = randint(min_burb_r, max_burb_r)
 
-    id1 = a.create_oval(x - r, y -r, x + r, y + r, outline = 'white')
+    id1 = a.create_oval(x - r, y - r, x + r, y + r, outline = 'white')
 
     burb_id.append(id1)
     burb_r.append(r)
@@ -69,7 +69,6 @@ def iegut_koord(id_skaitlis):
     y = (poz[1] + poz[3]) / 2
     return x,y
 
-
 def dzest_burbuli(i):
     del burb_r[i]
     del burb_atrums[i]
@@ -78,19 +77,18 @@ def dzest_burbuli(i):
 
 def notirit_burbulus():
     for i in range(len(burb_id)-1, -1, -1):
-        x,y = iegut_koord(burb_id[i])
+        x, y = iegut_koord(burb_id[i])
         if x < -atstarpe:
             dzest_burbuli(i)
 
 from math import sqrt
-
 def attalums(id1, id2):
     x1, y1 = iegut_koord(id1)
     x2, y2 = iegut_koord(id2)
-    return sqrt((x2-x1)**2 + (y2-y1)**2)
+    return sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
 def sadursme():
-    punkti=0
+    punkti = 0
     for burb in range(len(burb_id)-1, -1, -1):
         if attalums(kuga_id2, burb_id[burb]) < (kuga_r + burb_r[burb]):
             punkti += (burb_r[burb] + burb_atrums[burb])
@@ -106,38 +104,40 @@ def paradit_rezultatu(rezultats):
 def paradit_laiku(laiks_palicis):
     a.itemconfig(laiks_teksts, text=str(laiks_palicis))
 
-
+#Laika ierobežojumi
 
 burb_nejausi = 10
-laika_ierobezojums = 30
-papildlaika_rez = 1000
+LAIKA_IEROBEZOJUMS = 30
+PAPILDLAIKA_REZ = 1000
 rezultats = 0
 papildu = 0
-beigas = time() + laika_ierobezojums
+beigas = time() + LAIKA_IEROBEZOJUMS    
 
-
+burb_nejausi = 10
 
 #Speles galvenais cikls
+
+rezultats = 0
 
 while time() < beigas:
     if randint(1, burb_nejausi) == 1:
         izveidot_burbuli()
-        parvietot_burbulus()
-        notirit_burbulus()
-        rezultats += sadursme()
-        if (int(rezultats / papildlaika_rez)) > papildu:
-            papildu += 1
-            beigas += laika_ierobezojums
-        paradit_rezultatu(rezultats)
-        paradit_laiku(int(beigas - time()))
-        logs.update()
-        sleep(0.01)
+    parvietot_burbulus()
+    notirit_burbulus()
+    rezultats += sadursme()
+    if (int(rezultats / PAPILDLAIKA_REZ)) > papildu:
+        papildu += 1
+        beigas += LAIKA_IEROBEZOJUMS
+    paradit_rezultatu(rezultats)
+    paradit_laiku(int(beigas - time()))
+    logs.update()
+    sleep(0.01)
 
 #SPĒLES BEIGAS
 
-a.create_text(vid_x, vid_y, \
-    text = 'SPĒLES BEIGAS', fill='white', font=('Helvetica',30))
-a.create_text(vid_x, vid_y + 30, \
-    text = 'Rezultāts: '+ str(rezultats), fill='white')
+a.create_text(vid_x, vid_y,\
+    text='SPĒLES BEIGAS', fill='white', font=('Helvetica',30))
+a.create_text(vid_x, vid_y +30,  \
+    text='Rezultāts: '+ str(rezultats), fill='white')
 a.create_text(vid_x, vid_y + 45, \
-    text = 'Papildu laiks: '+ str(papildu*laika_ierobezojums), fill='white')
+    text='Papildu laiks: '+ str(papildu*LAIKA_IEROBEZOJUMS), fill='white')
